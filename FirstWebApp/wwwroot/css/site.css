@@ -1,0 +1,73 @@
+﻿/*
+  *{
+    border: 1px solid black;
+}
+    */
+
+#container {
+    width: 80%;
+    min-width: 640px;
+    margin: 0px auto;
+}
+header {
+    height: 200px;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+main{
+    min-height
+}
+nav {
+    width: 15%;
+    min-width: 150px;
+    float: left;
+    min-height: 520px;
+    padding: 10px;
+    border-right: 1px solid black;
+}
+nav ul{
+    list-style-type: none;
+    padding: 0px;
+}
+.level1{
+    margin-top: 10px;
+}
+.level2{
+    font-size: 80%;
+    padding-left: 15px;
+}
+content {
+    width: 65%;
+    min-width: 340px;
+    float: left;
+    min-height: 520px;
+    padding: 20px 10px;
+}
+aside {
+    width: 20%;
+    min-width: 150px;
+    float: right;
+    min-height: 520px;
+    padding: 10px;
+    border-left: 1px solid black;
+}
+footer {
+    clear: both;
+    height: 50px;
+    text-align: right;
+    padding: 4px 20px;
+    border-top: 1px solid black;
+}
+a:hover{
+    text-decoration: none;
+    font-weight: bold;
+}
+input[type=text], input[type=password]{
+    width:100%;
+    border-radius:5px;
+    box-sizing: border-box;
+}
+input[type=submit], input[type=reset] {
+    border-radius: 5px;
+}

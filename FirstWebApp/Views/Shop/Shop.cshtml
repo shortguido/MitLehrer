@@ -1,0 +1,46 @@
+﻿@model List<FirstWebApp.Models.Article>
+@{
+    ViewData["Title"] = "Shop";
+}
+
+<h1>Shop</h1>
+
+@if ((Model != null) && (Model.Count >= 1))
+{
+    <table>
+        <thead>
+            <tr>
+                <td>Artikelnummer</td>
+                <td>Artikelname</td>
+                <td>Artikelhersteller</td>
+                <td>Erscheinungsdatum</td>
+
+            </tr>
+        
+        </thead>
+        <tbody>
+            @foreach (Article a in Model)
+            {
+                <tr>
+                    <td>@a.ArticleId</td>
+                    <td>@a.Articlename</td>
+                    <td>@a.Brand</td>
+                    <td>@a.ReleaseDate.ToLongDateString()</td>
+
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">Unser Shopsortiment</td>
+            </tr>
+        </tfoot>
+    </table>
+}
+else
+{
+<p>
+    keine Artikel vorhanden
+
+</p>
+}

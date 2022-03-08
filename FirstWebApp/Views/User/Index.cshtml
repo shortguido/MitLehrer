@@ -1,0 +1,91 @@
+﻿@* gibt den Datentyp an der an die View übergeben wird *@
+@model List<FirstWebApp.Models.User>
+
+
+@{
+    ViewData["Title"] = "Benutzer";
+}
+
+<h3>Index</h3>
+
+@if ((Model == null) || (Model.Count < 1))
+{
+    <p>
+        Keine Benutzer in der Tabelle vorhanden!a
+    </p>
+}
+else { 
+    <table>
+        <thead>
+            <tr>
+                <td colspan="7">
+                    Benutzer
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                    BenutzerId
+                </th>
+                <th>
+                    Benutzername
+                </th>
+                <th>
+                    Geburtsdatum
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Geschlecht
+                </th>
+                <th></th>
+                <th></th>
+
+            </tr>
+            @foreach (User u in Model)
+            {
+        <tr>
+            <td>
+                @u.UserId
+            </td>
+            <td>
+                @u.Username
+            </td>
+            <td>
+                @u.Birthdate
+            </td>
+            <td>
+                @u.Email
+            </td>
+            <td>
+                @u.Gender
+            </td>
+            <td>
+                <form action="/user/delete/@u.UserId" method="get">
+                    <input type="submit" value="löschen" />
+
+                </form>
+            </td>
+            <td>
+                <form action="/user/update/@u.UserId" method="get">
+                    <input type="submit" value="ändern" />
+
+                </form>
+            </td>
+        </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="7">
+                    zur Bearbeitung der User
+                </td>
+            </tr>
+        </tfoot>
+        
+    </table>
+
+}
+    

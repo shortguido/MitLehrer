@@ -1,0 +1,32 @@
+﻿@model List<FirstWebApp.Models.Mitarbeiter>
+@{
+    ViewData["Title"] = "AboutUs";
+}
+
+<h1>AboutUs</h1>
+@if ((Model != null) && (Model.Count >= 1))
+{
+<table>
+    <thead>
+        <tr>
+            <td>Mitarbeiter</td>
+            <td>Name</td>
+            <td>Rang</td>
+            <td>Geburtsdatum</td>
+        </tr>
+    </thead>
+    <tbody>
+           @foreach (Mitarbeiter a in Model) { 
+        <tr>
+            <td>@a.MitarbeiterId</td>
+            <td>@a.Name</td>
+            <td>@a.Rang</td>
+            <td>@a.Geburtsdatum.ToLongDateString()</td>
+        </tr>
+        }
+    </tbody>
+    <tfoot>
+        <td colspan="4">Unsere Mitarbeiter</td>
+    </tfoot>
+</table>
+}
