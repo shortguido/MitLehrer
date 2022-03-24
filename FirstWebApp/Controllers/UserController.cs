@@ -11,12 +11,11 @@ namespace FirstWebApp.Controllers {
     public class UserController : Controller {
 
         private RepositoryUserDB rep = new RepositoryUsersDB();
-        public IActionResult Index() {
+        public async Task<IActionResult> Index() {
             try
             {
-                rep.Connect();
-                //Liste mit allen Usern an die View übergeben
-                return View(rep.GetAllUsers());
+                await rep.ConnectAsync();
+                return View(await rep.GetAllUsersAsync());
             }
             catch (DbException)
             {
@@ -25,10 +24,9 @@ namespace FirstWebApp.Controllers {
             }
             finally
             {
-                rep.Disconnect();
+                await rep.DisconnectAsync();
             }
 
-            //erzeugen eine Instanz vom typ user und übergeben sie an die zugehörige View
 
 
         }
@@ -38,22 +36,18 @@ namespace FirstWebApp.Controllers {
             return View();
         }
         [HttpPost]
-        public IActionResult Registration(User userDataFromForm) {
-            //Parameter überprüfen
+        public async Task<IActionResult> Registration(User userDataFromForm) { 
             if (userDataFromForm == null)
             {
-                //weiterleitung an eine Methode (Action) in selben Controller
                 return RedirectToAction("Registration");
 
             }
-            //Eingaben des Benutzers überprüfen
             ValidateRegistrationData(userDataFromForm);
-            //falls das Formulas richtig ausgefüllt wurde
             if (ModelState.IsValid)
             {
                 try
                 {
-                    rep.Connect();
+                    await rep.ConnectAsync();
                     if (rep.Insert(userDataFromForm))
                     {
                         return View("_Message",
@@ -66,7 +60,6 @@ namespace FirstWebApp.Controllers {
                         "Bitte versuchen Sie später erneut!"));
                     }
                 }
-                //Basisklasse der Datenbank-Exceptions
                 catch (DbException)
                 {
                     return View("_Message",
@@ -76,38 +69,30 @@ namespace FirstWebApp.Controllers {
 
             }
 
-            //falls etwas falsch eingeg wurde wird das Reg-Formular neu ausgeführt
             return View(userDataFromForm);
         }
         private void ValidateRegistrationData(User u) {
-            //Parameter überprüfen
             if (u == null)
             {
                 return;
             }
-            //Username
             if ((u.Username == null) || (u.Username.Trim().Length <= 4))
             {
                 ModelState.AddModelError("Username", "Der Benutzername muss mind 4 Zeichen lang sein");
             }
-            //Password
             if ((u.Password == null) || (u.Password.Length <= 8))
             {
                 ModelState.AddModelError("Password", "Das Passwort muss mind 8 Zeichen lang sein");
 
             }
-            //+min ein Großbuchstabe + mind ein Kleinbuchstabe + mind ein Sonderzeichen + mind eine Zahl
 
 
-            //Email
 
-            //Gebdat
             if (u.Birthdate >= DateTime.Now)
             {
                 ModelState.AddModelError("Birthdate", "Das Geburtsdatum darf sich nicht in der Zukunft befinden");
 
             }
-            //Gender
         }
         public IActionResult Login() {
             return View();

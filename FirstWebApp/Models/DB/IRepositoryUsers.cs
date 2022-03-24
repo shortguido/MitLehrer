@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 namespace FirstWebApp.Models.DB {
     interface RepositoryUserDB {
 
-        void Connect();
-        void Disconnect();
+        Task ConnectAsync();
+        Task DisconnectAsync();
 
         //CRUD_Operationen ... Create Read Update Delete
         bool Insert(User user);
         bool Delete(int userId);
         bool Update(int userId, User newUserData);
         User GetUser(int userId);
-        List<User> GetAllUsers();
+        Task<List<User>> GetAllUsersAsync();
         bool Login(string Username, string Password);
 
         //weitere Methoden...

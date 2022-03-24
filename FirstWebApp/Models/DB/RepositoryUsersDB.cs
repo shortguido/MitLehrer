@@ -10,6 +10,12 @@ using System.Threading.Tasks;
 //diese Klasse implementiert unser Interface 
 namespace FirstWebApp.Models.DB {
 
+    //paralelle bzw. asynchrone Programmierung 
+    //Threads: sollten in C# nicht direkt verwendet werden
+    //Tasks: sollten statt Threads verwendet werden
+    //ansyc und await verwendet Tasks und vereinfacht die Programmierung mit Threads/Tasks
+    //synchroner code und asynchroner Code sehen dadurch fast identisch aus
+    //Regel: dauert eine Methode länger als ca 60ms dann sollte sie asynchron programmiert werden
     
     public class RepositoryUsersDB : RepositoryUserDB {
 
@@ -18,7 +24,7 @@ namespace FirstWebApp.Models.DB {
         //über diese Verbindung wird mit dem DB-Server kommuniziert
         //also SQL Befehle gesendet usw
         private DbConnection connection;
-        public void Connect() {
+        public async Task ConnectAsync() {
             //falls die Verbindung noch nicht erzeugt wurde wird sie erzeugt
             if (this.connection == null)
             {
@@ -27,7 +33,8 @@ namespace FirstWebApp.Models.DB {
             //falls die Verbindung noch nicht geöffnet ist wird sie geöffnet
             if(this.connection.State != ConnectionState.Open)
             {
-                this.connection.Open();
+                //await wartet bis die Methode fertig ausgeführt wurde
+                await this.connection.OpenAsync();
             }
         }
 
@@ -50,16 +57,16 @@ namespace FirstWebApp.Models.DB {
             return false;
         }
 
-        public void Disconnect() {
+        public async Task DisconnectAsync() {
             //falls die Verbindung existiert und geöffnet ist 
             if ((this.connection != null) && (this.connection.State == ConnectionState.Open))
             {
                 //wird sie geschlossen
-                this.connection.Close();
+               await this.connection.CloseAsync();
             }
         }
 
-        public List<User> GetAllUsers() {
+        public async Task<List<User>> GetAllUsersAsync() {
 
             List<User> users = new List<User>();
 
@@ -70,12 +77,13 @@ namespace FirstWebApp.Models.DB {
                 //SQL Befehl angeben
                 cmdAllusers.CommandText = "select * from users;";
 
+
                 //wir bekommen nun eine komplette Tabelle zurück, diese wird mit einem DbDataReader
                 //Zeile für Zeile durchlaufen
 
-                using (DbDataReader reader=cmdAllusers.ExecuteReader() ) {
+                using (DbDataReader reader=await cmdAllusers.ExecuteReaderAsync() ) {
                     //mit read wird jeweils eine einzige Zeile (Datensatz) gelesen
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         //den User in der Liste abspeichern
                         users.Add(new User()

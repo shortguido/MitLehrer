@@ -1,5 +1,4 @@
-﻿@* gibt den Datentyp an der an die View übergeben wird *@
-@model List<FirstWebApp.Models.User>
+﻿@model List<FirstWebApp.Models.User>
 
 
 @{
@@ -10,9 +9,9 @@
 
 @if ((Model == null) || (Model.Count < 1))
 {
-    <p>
-        Keine Benutzer in der Tabelle vorhanden!a
-    </p>
+<p>
+    Keine Benutzer in der Tabelle vorhanden!
+</p>
 }
 else { 
     <table>
