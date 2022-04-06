@@ -109,9 +109,38 @@ namespace FirstWebApp.Models.DB {
         }
 
         public User GetUser(int userId) {
-            throw new NotImplementedException();
+            User user;
+            if (this.connection?.State == ConnectionState.Open)
+            {
+                DbCommand cmdGetUser = this.connection.CreateCommand();
+                //SQL - Befehl angeben
+                cmdGetUser.CommandText = "select * from users where User_id=@User_id";
+                DbParameter paramID = cmdGetUser.CreateParameter();
+                //hier den oben gewählten Parameternamen verwenden
+                paramID.ParameterName = "User_id";
+                paramID.DbType = DbType.String;
+                paramID.Value = userId;
+                using (DbDataReader reader = cmdGetUser.ExecuteReader())
+                {
+                    user = new User
+                    {
+                        UserId = Convert.ToInt32(reader["User_id"]),
+                        Username = Convert.ToString(reader["username"]),
+                        Password = Convert.ToString(reader["password"]),
+                        Birthdate = Convert.ToDateTime(reader["birthdate"]),
+                        Email = Convert.ToString(reader["email"]),
+                        Gender = (Gender)Convert.ToInt32(reader["gender"])
+                    };
 
-            //bitte keine Schleife verwenden
+                    return user;
+                }
+
+            }
+
+            return null;
+
+            // bitte keine Schleife verwenden
+
         }
 
         public bool Insert(User user) {
@@ -168,11 +197,37 @@ namespace FirstWebApp.Models.DB {
         }
 
         public bool Login(string Username, string Password) {
-            throw new NotImplementedException();
+
+            string pw;
+            if (this.connection?.State == ConnectionState.Open)
+            {
+                //ein leeres Commmand erzuegen
+                DbCommand cmdLogin = this.connection.CreateCommand();
+                // SQL-Befehl angeben: Parameter verwenden, um SQL-Injection zu vermeiden
+                //      @username... Paramtername - kann frei gewählt werden
+                //       SQL-Injection: es versucht ein Angreifer einen SQL-Befehl zu den MySQL-Server zu senden
+                cmdLogin.CommandText = "select password from users where username=@username; ";
+                DbParameter paramUsername = cmdLogin.CreateParameter();
+                //Parameter @username befüllen
+                paramUsername.ParameterName = "username";
+                paramUsername.DbType = DbType.String;
+                paramUsername.Value = Username;
+                using (DbDataReader reader = cmdLogin.ExecuteReader())
+                {
+                    pw = Convert.ToString(reader["password"]);
+                };
+                if (pw == Password)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool Update(int userId, User newUserData) {
             throw new NotImplementedException();
         }
     }
+     
 }

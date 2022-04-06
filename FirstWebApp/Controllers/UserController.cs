@@ -19,14 +19,14 @@ namespace FirstWebApp.Controllers {
             }
             catch (DbException)
             {
-                return View("Message", new Message("Datenbankfehler", "die Benutzer konnten nicht geladen" +
+                return View("_Message", new Message("Datenbankfehler", "die Benutzer konnten nicht geladen" +
                     "werden, Versuchen sie es später erneut."));
             }
             finally
             {
                 await rep.DisconnectAsync();
             }
-
+            
 
 
         }
